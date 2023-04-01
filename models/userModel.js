@@ -16,7 +16,11 @@ const userSchema = new mongoose.Schema({
       type: String,
       enum: ["student", "admin"],
       default: "student",
-    }
+    },
+    courses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }]
   })
   userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
