@@ -2,10 +2,13 @@ const User = require("../models/userModel");
 const Course = require("../models/courseModel");
 
 exports.enroll = async (req, res) => {
-    const { courseId } =req.params;
+    // const { courseId } =req.params.id;
+    const { id: courseId } = req.params;
     const { userId } =req.body;
 
     try{
+        console.log(req.params.id)
+        console.log(userId)
         const course = await Course.findById(courseId);
         if(!course){
             return res.status(404).json({message: "Course not found"});
