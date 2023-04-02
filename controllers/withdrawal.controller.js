@@ -50,10 +50,13 @@ exports.withdrawUserFromCourse= async (req,res)=>{
         const withdrawal = await Withdrawal.findOne({ courseId: courseId });
         if(!withdrawal){
             return(res.status(404).json({message:"No Withdrawal applications found"}));}
+        else if(withdrawal.userId !== userId){
+            return(res.status(404).json({message:"User is not enrolled in this course"}));
+        }
         else{
         await Withdrawal.findOneAndDelete({courseId:courseId, userId:userId})
         return res.status(204).json({ message: "User withdrawn successfully" });
-    }
+        }
     }
     catch(error){
         return(res.status(504).json({message: "Internal server error 504"}))
