@@ -67,4 +67,19 @@ exports.createCourse = async (req, res) => {
             console.log(error);
             return res.status(500).json({message: "Internal server error 504"});
         }
+    exports.withdraw= async (req,res)=>{
+        try{
+        const { courseId: courseId, userId : userId } = req.body;
+        const user = await User.findById(userId);
+        const course = await Course.findById(courseId);
+        if(!course || !user) return res.status(404).json({message: "User/Course not found!!"});
+        if(!course.students.includes(userId)) {
+            return res.status(400).json({message: "User not enrolled"});}
+        
+
+    } catch(error){
+        console.log(error)
+        return(res.status(404).json({message: "Internal server error 504"}))}
+    }
+
 }
