@@ -16,19 +16,20 @@ exports.applyForWithdrawal= async (req,res)=>{
     studentName = student.name;
     courseName = course.name;
     console.log(courseName,studentName);
-    const withdraw = new Withdrawal({
+    const withdrawal = new Withdrawal({
         courseId: courseId,
         courseName: courseName,
         studentId: userId,
         studentName: studentName,
     });
-    await withdraw.save();
+    await withdrawal.save();
     return(res.status(504).json({message:"User application saved"}));
     } catch(error){
         console.log(error)
         return(res.status(504).json({message: "Internal server error 504"}))
     }
 }
+
 exports.getWithdrawalRequests= async (req,res)=>{
     try{
         const withdrawals =await Withdrawal.find();
@@ -42,3 +43,19 @@ exports.getWithdrawalRequests= async (req,res)=>{
         return(res.status(504).json({message: "Internal server error 504"}))
     }
     }
+
+exports.withdrawUserFromCourse= async (req,res)=>{
+    try{
+        const {courseId:courseId , userId:userId} = req.body;
+        const withdrawal = await Withdrawal.findOne({ courseId: courseId });
+        if(!withdrawal){
+            return(res.status(404).json({message:"No Withdrawal applications found"}));}
+        else{
+        await Withdrawal.findOneAndDelete({courseId:courseId, userId:userId})
+        return res.status(204).json({ message: "User withdrawn successfully" });
+    }
+    }
+    catch(error){
+        return(res.status(504).json({message: "Internal server error 504"}))
+    }
+}

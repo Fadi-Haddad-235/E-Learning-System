@@ -10,12 +10,12 @@ const WithdrawalSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  studentId:{
+  userId:{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'Student'
   },
-  studentName :{
+  userName :{
     type: String,
     required: true
   }
