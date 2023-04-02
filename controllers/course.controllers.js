@@ -36,3 +36,22 @@ exports.getAllCourses = async (req, res) => {
 
     res.json(courses)  
 }
+exports.createCourse = async (req, res) => {
+    const { name, description } = req.body;
+    const course = await Course.findOne({ name });
+    if(course){
+        return res.status(404).json({message: "Course already Exists"});
+    }
+    try {
+      const course = new Course({
+        name,
+        description,
+        students: []
+      });
+      await course.save();
+      res.status(201).json(course);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+}
