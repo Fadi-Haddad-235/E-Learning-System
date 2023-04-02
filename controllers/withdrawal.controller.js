@@ -55,6 +55,8 @@ exports.withdrawUserFromCourse= async (req,res)=>{
         }
         else{
         await Withdrawal.findOneAndDelete({courseId:courseId, userId:userId})
+        await Course.updateOne({_id:courseId},{pull:{"students":userId}})
+        await User.updateOne({_id:userId},{pull:{"courses":courseId}})
         return res.status(204).json({ message: "User withdrawn successfully" });
         }
     }
@@ -62,3 +64,4 @@ exports.withdrawUserFromCourse= async (req,res)=>{
         return(res.status(504).json({message: "Internal server error 504"}))
     }
 }
+
