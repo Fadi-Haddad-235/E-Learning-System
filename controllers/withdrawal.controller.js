@@ -29,3 +29,16 @@ exports.applyForWithdrawal= async (req,res)=>{
         return(res.status(504).json({message: "Internal server error 504"}))
     }
 }
+exports.getWithdrawalRequests= async (req,res)=>{
+    try{
+        const withdrawals =await Withdrawal.find();
+        if(!withdrawals){
+            return(res.status(504).json({message:"No Withdrawal applications found"})); 
+        }
+        return(res.status(200).json(withdrawals));
+
+    }
+    catch(error){
+        return(res.status(504).json({message: "Internal server error 504"}))
+    }
+    }
